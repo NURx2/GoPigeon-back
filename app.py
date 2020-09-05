@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 from src.preprocessing import image_preprocessing
 from src.prediction import predict
-from src.helpers import fix_na
+from src.fix_na import fix_na
 import pandas as pd
 
 app = Flask(__name__)
@@ -11,8 +11,6 @@ app = Flask(__name__)
 UPLOADER_FOLDER = "request_images"
 
 DEBUG = False
-
-ALLOWED_SPECIES = ['insert', 'values']  # TODO: fill it
 
 
 @app.route("/image", methods=["POST"])
@@ -45,9 +43,10 @@ def get_image():
 
         print("reading csv")
         data = pd.read_csv("imagenet.csv").fillna("")
+        allowed_species = data['category_name'].tolist()
 
         for label in labels:
-            if label not in ALLOWED_SPECIES:
+            if label not in allowed_species:
                 continue
             print(label)
             result = {"class_name": label[0], "tag": label[1], "probability": float(label[2])}
