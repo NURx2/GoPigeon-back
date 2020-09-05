@@ -2,7 +2,7 @@ from flask import Flask, request, abort, jsonify
 from datetime import datetime
 import os
 from src.preprocessing import image_preprocessing
-from src.prediction import predict
+from src.predict import predict
 from src.fix_na import fix_na
 import pandas as pd
 
