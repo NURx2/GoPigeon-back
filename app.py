@@ -49,21 +49,21 @@ def get_image():
             result["rus_name"] = fix_na(row.rus_name)
             result["photo_link"] = fix_na(row.photo_link)
             result["food"] = fix_na(row.food)
-            result["size"] = fix_na(row.size)
             result["description"] = fix_na(row.description)
             result["brief"] = fix_na(row.brief)
             return jsonify(result)
 
         return {
-            "category_name": "",
-            "tag": "",
-            "probability": "",
-            "rus_name": "",
-            "photo_link": "",
-            "food": "",
-            "size": "",
-            "description": "",
-            "brief": "",
+            "category_name": "undefined_bird",
+            "id": "no001",
+            "probability": 0,
+            "rus_name": "курлык",
+            "photo_link": "https://docs.google.com/spreadsheets/d/"
+                          "16nyN8OfUAbsQEGavjEuQtZoSecxyyo5KoBR9ZzGThqI/edit#gid=571539848",
+            "food": "подсушенный белый хлеб, зерна, крупы, семечки, овсяные хлопья",
+            "description": "Человек приручил дикого сизого голубя более 5000 лет тому назад. С тех пор голубеводы "
+                           "вывели более 800 пород домашних голубей, различных по цвету, форме тела и назначению.",
+            "brief": "Мы не уверены, но возможно это Голубь!",
         }
 
     except Exception as ex:
