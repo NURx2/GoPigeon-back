@@ -58,8 +58,7 @@ def get_image():
             "id": "no001",
             "probability": 0,
             "rus_name": "курлык",
-            "photo_link": "https://docs.google.com/spreadsheets/d/"
-                          "16nyN8OfUAbsQEGavjEuQtZoSecxyyo5KoBR9ZzGThqI/edit#gid=571539848",
+            "photo_link": "https://drive.google.com/file/d/1HUkCNwHbFihtUVD09jrCXimRmaLJhMD8/view",
             "food": "подсушенный белый хлеб, зерна, крупы, семечки, овсяные хлопья",
             "description": "Человек приручил дикого сизого голубя более 5000 лет тому назад. С тех пор голубеводы "
                            "вывели более 800 пород домашних голубей, различных по цвету, форме тела и назначению.",
