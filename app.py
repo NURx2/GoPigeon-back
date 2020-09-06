@@ -4,17 +4,20 @@ import os
 from src.preprocessing import image_preprocessing
 from src.predict import predict
 from src.fix_na import fix_na
-import pandas as pd
+from src.data_loading import get_imagenet, get_allowed_species
 
 app = Flask(__name__)
 
 UPLOADER_FOLDER = "request_images"
 
-DEBUG = False
+DEBUG = True
 
 
 @app.route("/image", methods=["POST"])
 def get_image():
+    data = get_imagenet()
+    allowed_species = get_allowed_species()
+
     print(dir(request))
 
     print(request.files)
@@ -27,13 +30,8 @@ def get_image():
     print(dir(image))
 
     try:
-        if DEBUG:
-            filename = os.path.join(UPLOADER_FOLDER, "2019-10-26T22:13:18.942507.jpg")
-        else:
-            filename = os.path.join(UPLOADER_FOLDER, f"{datetime.now().isoformat()}.jpg")
-
-            image.save(filename)
-
+        filename = os.path.join(UPLOADER_FOLDER, f"{datetime.now().isoformat()}.jpg")
+        image.save(filename)
         print("save completed")
 
         image_batch = image_preprocessing(filename)
@@ -41,26 +39,23 @@ def get_image():
         print("start predicting")
         labels = predict(image_batch)
 
-        print("reading csv")
-        data = pd.read_csv("imagenet.csv").fillna("")
-        allowed_species = data['category_name'].tolist()
-
         for label in labels:
-            if label not in allowed_species:
-                continue
             print(label)
-            result = {"class_name": label[0], "tag": label[1], "probability": float(label[2])}
-            row = data[data.class_id == label[0]].iloc[0]
+            if label[1] not in allowed_species:
+                continue
+            result = {"category_name": label[1], "id": label[0], "probability": float(label[2])}
+            row = data[data.category_name == label[1]].iloc[0]
             print(row)
             result["rus_name"] = fix_na(row.rus_name)
             result["photo_link"] = fix_na(row.photo_link)
             result["food"] = fix_na(row.food)
             result["size"] = fix_na(row.size)
             result["description"] = fix_na(row.description)
+            result["brief"] = fix_na(row.brief)
             return jsonify(result)
 
         return {
-            "class_name": "",
+            "category_name": "",
             "tag": "",
             "probability": "",
             "rus_name": "",
@@ -68,6 +63,7 @@ def get_image():
             "food": "",
             "size": "",
             "description": "",
+            "brief": "",
         }
 
     except Exception as ex:
@@ -81,7 +77,8 @@ def get_image():
 def main():
     os.makedirs(UPLOADER_FOLDER, exist_ok=True)
     app.run(
-        port=7733
+        port=7733,
+        debug=DEBUG
     )
 
 

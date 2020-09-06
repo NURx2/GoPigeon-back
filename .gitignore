@@ -1,2 +1,5 @@
 .idea/
 .DS_Store
+__pycache__/
+src/__pycache/
+request_images/
